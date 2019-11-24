@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>xpyct707.sia.taco-cloud</groupId>
+    <artifactId>aggregator</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <description>Study project for 'Spring in action' book</description>
+
+    <modules>
+        <module>parent</module>
+        <module>entity</module>
+        <module>data</module>
+        <module>security</module>
+        <module>web</module>
+        <module>rest</module>
+        <module>main</module>
+    </modules>
+</project>
