@@ -34,6 +34,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>rest</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ui</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

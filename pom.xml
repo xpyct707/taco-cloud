@@ -16,6 +16,7 @@
         <module>security</module>
         <module>web</module>
         <module>rest</module>
+        <module>ui</module>
         <module>main</module>
     </modules>
 </project>
