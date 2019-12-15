@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.PATCH;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -35,18 +38,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/design", "/orders", "/console/**")
-                .hasRole("USER")
-                .antMatchers("/", "/**")
-                .permitAll()
+                .antMatchers(OPTIONS)
+                    .permitAll() // needed for Angular/CORS
+                .antMatchers("/design", "/orders/**")
+                    .permitAll()
+                    //.access("hasRole('ROLE_USER')")
+                .antMatchers(PATCH, "/ingredients")
+                    .permitAll()
+                .antMatchers("/**")
+                    .permitAll()
+
             .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/design")
+                    .loginPage("/login")
+
+            .and()
+                .httpBasic()
+                    .realmName("Taco Cloud")
+
             .and()
                 .logout()
-                .logoutSuccessUrl("/");
-//        http.csrf().disable();
-//        http.headers().frameOptions().disable();
+                    .logoutSuccessUrl("/")
+
+            .and()
+                .csrf()
+                    .ignoringAntMatchers("/h2-console/**", "/ingredients/**", "/design", "/orders/**")
+
+            // Allow pages to be loaded in frames from the same origin; needed for H2-Console
+            .and()
+                .headers()
+                    .frameOptions()
+                        .sameOrigin()
+        ;
     }
 }
