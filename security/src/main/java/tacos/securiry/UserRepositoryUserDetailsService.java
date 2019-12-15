@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tacos.data.UserRepository;
 
+import static java.lang.String.format;
+
 @Service
 @RequiredArgsConstructor
 public class UserRepositoryUserDetailsService implements UserDetailsService {
@@ -21,6 +23,6 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
     }
 
     private UsernameNotFoundException getUsernameNotFoundException(String username) {
-        return new UsernameNotFoundException(String.format("User '%s' not found", username));
+        return new UsernameNotFoundException(format("User '%s' not found", username));
     }
 }

@@ -1,6 +1,7 @@
 package tacos;
 
 import lombok.Data;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Data
 @Entity
+@RestResource(rel = "tacos", path = "tacos")
 public class Taco {
     @Id
     @GeneratedValue
@@ -25,7 +27,7 @@ public class Taco {
     private String name;
 
     @ManyToMany(targetEntity = Ingredient.class)
-    @Size(min=1, message="You must choose at least 1 ingredient")
+    @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
 
 

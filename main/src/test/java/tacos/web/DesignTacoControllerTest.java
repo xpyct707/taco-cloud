@@ -33,10 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(OldDesignTacoController.class)
+//@WebMvcTest(DesignTacoController.class)
 @MockBean(OrderRepository.class)
 @MockBean(UserDetailsService.class)
-class OldDesignTacoControllerTest {
+class DesignTacoControllerTest {
     @Autowired
     private MockMvc mockMvc;
 

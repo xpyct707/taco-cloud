@@ -26,10 +26,12 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>security</artifactId>
         </dependency>
+<!-- The 'rest' module is used instead
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>web</artifactId>
         </dependency>
+-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rest</artifactId>

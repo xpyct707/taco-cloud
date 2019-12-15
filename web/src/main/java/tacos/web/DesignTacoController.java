@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/design")
 @SessionAttributes("order")
 @RequiredArgsConstructor
-public class OldDesignTacoController {
+public class DesignTacoController {
     private final IngredientRepository ingredientRepo;
     private final TacoRepository designRepo;
 

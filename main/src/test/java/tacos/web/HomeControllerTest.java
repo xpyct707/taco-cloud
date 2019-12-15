@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockBean(OrderRepository.class)
 @MockBean(UserRepository.class)
 @MockBean(PasswordEncoder.class)
-@MockBean(OrderProps.class)
+//@MockBean(OrderProps.class)
 class HomeControllerTest {
     @Autowired
     private MockMvc mockMvc;

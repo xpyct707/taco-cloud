@@ -7,23 +7,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tacos.Taco;
 import tacos.data.TacoRepository;
 
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.by;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(
-        path = "/design",
-        produces = "application/json")
+@RequestMapping(path = "/design",
+                produces = APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class DesignTacoController {
+public class DesignTacoRestController {
     private final TacoRepository tacoRepo;
     private final EntityLinks entityLinks;
 
@@ -45,5 +49,11 @@ public class DesignTacoController {
 
     private ResponseEntity<Taco> createResponseEntity(Taco taco, HttpStatus ok) {
         return new ResponseEntity<>(taco, ok);
+    }
+
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    @ResponseStatus(CREATED)
+    public Taco postTaco(@RequestBody Taco taco) {
+        return tacoRepo.save(taco);
     }
 }
