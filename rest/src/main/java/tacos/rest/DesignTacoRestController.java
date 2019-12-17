@@ -1,6 +1,8 @@
 package tacos.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ import tacos.data.TacoRepository;
 
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.by;
+import static org.springframework.hateoas.CollectionModel.wrap;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -33,10 +38,18 @@ public class DesignTacoRestController {
 
 
     @GetMapping("/recent")
-    public Iterable<Taco> recentTacos() {
-        return tacoRepo
-                .findAll(of(0, 12, by("createdAt").descending()))
+    public CollectionModel<TacoResource> recentTacos() {
+        var page = of(0, 12, by("createdAt").descending());
+        var tacos = tacoRepo
+                .findAll(page)
                 .getContent();
+        var tacoResources = new TacoResourceAssembler().toCollectionModel(tacos);
+        tacoResources.add(
+                linkTo(
+                        methodOn(DesignTacoRestController.class)
+                                .recentTacos())
+                        .withRel("recents"));
+        return tacoResources;
     }
 
     @GetMapping("/{id}")
