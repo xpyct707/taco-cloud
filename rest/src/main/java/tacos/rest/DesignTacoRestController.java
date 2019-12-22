@@ -2,9 +2,6 @@ package tacos.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.EntityLinks;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,15 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import tacos.Taco;
 import tacos.data.TacoRepository;
 
-import static org.springframework.data.domain.PageRequest.of;
-import static org.springframework.data.domain.Sort.by;
-import static org.springframework.hateoas.CollectionModel.wrap;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static tacos.rest.util.RestControllerUtils.createResponseEntity;
 
 @RestController
 @RequestMapping(path = "/design",
@@ -34,22 +28,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class DesignTacoRestController {
     private final TacoRepository tacoRepo;
-    private final EntityLinks entityLinks;
-
+    private final RecentTacosComponent recentTacos;
 
     @GetMapping("/recent")
     public CollectionModel<TacoResource> recentTacos() {
-        var page = of(0, 12, by("createdAt").descending());
-        var tacos = tacoRepo
-                .findAll(page)
-                .getContent();
-        var tacoResources = new TacoResourceAssembler().toCollectionModel(tacos);
-        tacoResources.add(
-                linkTo(
-                        methodOn(DesignTacoRestController.class)
-                                .recentTacos())
-                        .withRel("recents"));
-        return tacoResources;
+        return recentTacos.recentTacos(methodOn(DesignTacoRestController.class).recentTacos());
     }
 
     @GetMapping("/{id}")
@@ -58,10 +41,6 @@ public class DesignTacoRestController {
                 .findById(id)
                 .map(taco -> createResponseEntity(taco, OK))
                 .orElseGet(() -> createResponseEntity(null, NOT_FOUND));
-    }
-
-    private ResponseEntity<Taco> createResponseEntity(Taco taco, HttpStatus ok) {
-        return new ResponseEntity<>(taco, ok);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
